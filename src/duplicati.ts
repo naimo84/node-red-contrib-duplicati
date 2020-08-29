@@ -25,8 +25,17 @@ module.exports = function (RED) {
         RED.httpAdmin.get("/duplicatiBackups", async function (req, res) {
 
             RED.log.debug("GET /duplicatiBackups");
-            let serverstate = await dup.getBackups(node.token,node.auth);
-            res.json(serverstate);
+            let backups = await dup.getBackups(node.token, node.auth);
+
+            let ret = [];
+            backups.forEach(backup => {
+                ret.push({
+                    id: backup.Backup.ID,
+                    name: backup.Backup.Name
+                });
+            });
+
+            res.json(ret);
         });
 
         node.on('input', async function (msg) {

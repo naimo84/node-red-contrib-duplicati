@@ -39,15 +39,15 @@
                                 $("#node-config-lookup").removeClass('disabled');
                                 response($.map(data, function (value, key) {
                                     return {
-                                        label: value.Name,
-                                        value: value.Serial
+                                        label: value.name,
+                                        value: value.id
                                     };
                                 }));
                             });
                         },
                         minLength: 0,
                         select: function (event, ui) {
-                            $('#node-input-device').val(ui.item.label);
+                            $('#node-input-lookup').val(ui.item.label);
                             $('#node-input-deviceserial').val(ui.item.value);
                             return false;
                         }
