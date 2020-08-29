@@ -1,0 +1,104 @@
+<script type="text/javascript">
+    RED
+        .nodes
+        .registerType('duplicati-node', {
+            category: 'duplicati',
+            inputs: 1,
+            outputs: 1,
+            color: "#FFFFFF",
+            defaults: {
+                confignode: {
+                    value: "",
+                    type: "duplicati-config",
+                    required: false
+                },
+                name: {
+                    value: ""
+                },
+                action: {
+                    value: ""
+                }
+            },
+            label: function () {
+                return "duplicati";
+            },
+
+            icon: "app.svg",
+            paletteLabel: "duplicati",
+            oneditprepare: function () {
+                var node = this;
+                $("#node-config-lookup").click(function () {
+                    $("#node-config-lookup-icon").removeClass('fa-search');
+                    $("#node-config-lookup-icon").addClass('spinner');
+                    $("#node-config-lookup").addClass('disabled');
+                    $("#node-input-lookup").autocomplete({
+                        source: function (request, response) {
+                            $.getJSON('duplicatiBackups', function (data) {
+                                $("#node-config-lookup-icon").addClass('fa-search');
+                                $("#node-config-lookup-icon").removeClass('spinner');
+                                $("#node-config-lookup").removeClass('disabled');
+                                response($.map(data, function (value, key) {
+                                    return {
+                                        label: value.Name,
+                                        value: value.Serial
+                                    };
+                                }));
+                            });
+                        },
+                        minLength: 0,
+                        select: function (event, ui) {
+                            $('#node-input-device').val(ui.item.label);
+                            $('#node-input-deviceserial').val(ui.item.value);
+                            return false;
+                        }
+                    }).autocomplete("search", "");
+                });
+
+                $('#node-input-action').change(function () {
+                    var value = $('#node-input-action').val()
+                    console.log(value)
+                    if (value === 'getBackups') {
+                        $('#node-input-value').parent().hide();
+                        $('#node-input-value').parent().hide();
+                    } else {
+                        $('#node-input-value').parent().show();
+                        $('#node-input-value').parent().show();
+                    }
+                    $('.form-row.toggle').hide()
+                    $('.form-row.' + value).show()
+                });
+            }
+        });
+</script>
+
+<script type="text/x-red" data-template-name="duplicati-node">
+    <div class="form-row">        
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+        <input type="text" id="node-input-name">
+    </div>
+    <hr/>
+    <div class="form-row">
+        <label for="node-input-confignode"><i class="fa fa-globe"></i> <span>Config</span></label>
+        <input type="text" id="node-input-confignode">
+    </div>
+    <div class="form-row">
+        <label for="node-input-action"><i class="fa fa-tag"></i> Action</label>
+		<select type="text" id="node-input-action" style="display: inline-block; width: 70%;" >
+                <option value="getBackups">get backup list</option>
+                <option value="setServerstate">set serverstate</option>
+                <option value="runBackup">run backup</option>
+               
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-value"><i class="fa fa-barcode" aria-hidden="true"></i> Value</label>
+        <input type="text" id="node-input-value" style="width:70%;" placeholder="">
+    </div>
+    <div class="form-row">
+        <label for="node-input-lookup"><i class="fa fa-barcode" aria-hidden="true"></i> List</label>
+        <input type="text" id="node-input-lookup" style="width:60%;" placeholder="">
+        <a id="node-config-lookup" class="btn">
+            <i id="node-config-lookup-icon" class="fa fa-search">           
+            </i></a>
+    </div>
+</script>

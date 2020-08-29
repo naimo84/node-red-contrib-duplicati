@@ -1,0 +1,79 @@
+{
+  "name": "node-red-contrib-duplicati",
+  "version": "0.0.1",
+  "node-red": {
+    "nodes": {
+      "duplicati-node": "dist/duplicati.js",
+      "duplicati-config": "dist/duplicati-config.js"
+    }
+  },
+  "description": "NodeRed duplicati Adapter",
+  "author": {
+    "name": "naimo84",
+    "email": "git@neumann-benjamin.de"
+  },
+  "contributors": [
+    {
+      "name": "naimo84",
+      "email": "git@neumann-benjamin.de"
+    }
+  ],
+  "homepage": "https://github.com/naimo84/node-red-contrib-duplicati",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/naimo84/node-red-contrib-duplicati"
+    }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "node-red"
+  ],
+  "scripts": {
+    "debug": "node --inspect=0.0.0.0:5858 --preserve-symlinks C:\\Users\\mail\\AppData\\Roaming\\npm\\node_modules\\node-red\\red.js -v --userDir C:\\Users\\mail\\.node-red",
+    "start": "node-red",
+    "test": "mocha \"test/**/*_spec.js\"",
+    "release": "standard-version",
+    "release-minor": "standard-version --release-as minor",
+    "watch": "tsc -w -p ./tsconfig.json",
+    "dev": "gulp develop",
+    "build": "gulp"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "test/*",
+      "docs/*"
+    ],
+    "delay": "2500ms",
+    "verbose": true,
+    "ext": "js,html"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint --edit"
+    }
+  },
+  "funding": {
+    "type": "paypal",
+    "url": "https://paypal.me/NeumannBenjamin"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-nodemon": "^2.4.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-watch": "^5.0.1",
+    "husky": "4.0.10",
+    "mocha": "7.0.0",
+    "node-red": "1.0.3",
+    "node-red-node-test-helper": "^0.2.3",
+    "nodemon": "^1.19.4",
+    "sinon": "8.1.0",
+    "standard-version": "^7.1.0",
+    "typescript": "^3.7.5",
+    "@types/node": "^14.6.0"
+  },
+  "dependencies": {
+    "node-duplicati": "file:../node-duplicati"
+  }
+}

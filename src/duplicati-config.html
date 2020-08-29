@@ -1,0 +1,54 @@
+<script type="text/javascript">
+    RED
+        .nodes
+        .registerType('duplicati-config', {
+            category: 'config',
+            defaults: {
+                url: {
+                    value: '',
+                },               
+                password: {
+                    value: '',
+                },           
+            },
+            label: function () {
+                if (this.name) {
+                    return this.name;
+                }
+                return 'duplicati Config';
+            }     
+        });
+</script>
+
+<script type="text/x-red" data-template-name="duplicati-config">
+    <div class="form-row">
+        <label for="node-config-input-name" style="width:160px !important">
+            <i class="fa fa-user"></i>
+            <span>Name:</span></label>
+        <input type="text" id="node-config-input-name" placeholder="" style="width:280px !important">
+    </div>
+    <hr/>
+    <div class="form-row" style="display:flex">
+        <label for="node-config-input-url" style="min-width:160px !important">
+            <i class="fa fa-link"></i>
+            <span>duplicati URL</span></label>
+        <input type="text" id="node-config-input-url" placeholder="" style="width:100% !important">
+    </div>   
+    <div class="form-row">
+        <label for="node-config-input-password" style="width:160px !important">
+            <i class="fa fa-key"></i>
+            <span>Password:</span></label>
+        <input type="password" id="node-config-input-password" placeholder="" style="width:280px !important">
+    </div>
+  
+</script>
+
+<script type="text/x-red" data-help-name="duplicati-config">
+    <p>Configuration</p>
+    <ul>
+        <li><b>URL</b> URL to Duplicati     
+        <li><b>Password</b> Duplicati password
+  
+    </ul>
+
+</script>
