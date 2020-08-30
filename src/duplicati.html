@@ -1,17 +1,32 @@
 <script type="text/javascript">
-    function initDropDown(value) {
-        console.log(value)
+    function initDropDown(action) {
+        console.log(action)
         $("#node-input-dropdown").autocomplete({
             source: function (request, response) {
-
-                response([{
-                    label: 'value.name',
-                    value: 'value.id'
-                }]);
+                if (action === 'runBackup') {
+                    $.getJSON('duplicatiBackups', function (data) {
+                        $("#node-config-lookup-icon").addClass('fa-search');
+                        $("#node-config-lookup-icon").removeClass('spinner');
+                        $("#node-config-lookup").removeClass('disabled');
+                        response($.map(data, function (value, key) {
+                            return {
+                                label: value.name,
+                                value: value.id
+                            };
+                        }));
+                    });
+                } else {
+                    response([{
+                        label: 'value.name',
+                        value: 'value.id'
+                    }]);
+                }
             },
             minLength: 0,
             select: function (event, ui) {
-               
+                $('#node-input-dropdown').val(ui.item.label);
+                $('#node-input-dropdown_value').val(ui.item.value);
+
                 return false;
             }
         }).autocomplete("search", "");
@@ -31,9 +46,9 @@
                 },
                 name: {
                     value: ""
-                }, lookup: {
+                }, dropdown: {
                     value: ""
-                }, lookup_value: {
+                }, dropdown_value: {
                     value: ""
                 },
                 action: {
@@ -56,42 +71,27 @@
                     $("#node-config-lookup-icon").removeClass('fa-search');
                     $("#node-config-lookup-icon").addClass('spinner');
                     $("#node-config-lookup").addClass('disabled');
-                    $("#node-input-lookup").autocomplete({
-                        source: function (request, response) {
-                            $.getJSON('duplicatiBackups', function (data) {
-                                $("#node-config-lookup-icon").addClass('fa-search');
-                                $("#node-config-lookup-icon").removeClass('spinner');
-                                $("#node-config-lookup").removeClass('disabled');
-                                response($.map(data, function (value, key) {
-                                    return {
-                                        label: value.name,
-                                        value: value.id
-                                    };
-                                }));
-                            });
-                        },
-                        minLength: 0,
-                        select: function (event, ui) {
-                            $('#node-input-lookup').val(ui.item.label);
-                            $('#node-input-lookup_value').val(ui.item.value);
-                            return false;
-                        }
-                    }).autocomplete("search", "");
+                    initDropDown($('#node-input-action').val());
                 });
                 $("#node-input-dropdown").click(function () {
-                    initDropDown( $('#node-input-action').val());
+                    initDropDown($('#node-input-action').val());
                 })
                 $('#node-input-action').change(function () {
                     var value = $('#node-input-action').val()
-                 
+                    //initDropDown($('#node-input-action').val());
                     if (value === 'getBackups') {
                         $('#node-input-value').parent().hide();
-                        $('#node-input-lookup').parent().hide();
-                        
+                        $('#node-input-dropdown').parent().hide();
+
                     } else if (['runBackup'].indexOf(value) >= 0) {
                         $('#node-input-value').parent().hide();
-                        $('#node-input-lookup').parent().show();
-                        
+                        $('#node-input-dropdown').parent().show();
+
+                    }
+                    else if (['setServerstate'].indexOf(value) >= 0) {
+                        $('#node-input-value').parent().show();
+                        $('#node-input-dropdown').parent().show();
+
                     }
                     $('.form-row.toggle').hide()
                     $('.form-row.' + value).show()
@@ -119,20 +119,18 @@
                
         </select>
     </div>
+    
+  
     <div class="form-row">
-        <label for="node-input-value"><i class="fa fa-barcode" aria-hidden="true"></i> Value</label>
-        <input type="text" id="node-input-value" style="width:70%;" placeholder="">
-    </div>
-    <div class="form-row">
-        <label for="node-input-lookup"><i class="fa fa-barcode" aria-hidden="true"></i> List</label>
-        <input type="text" id="node-input-lookup" style="width:60%;" placeholder="">
-        <input type="hidden" id="node-input-lookup_value">
+        <label for="node-input-dropdown"><i class="fa fa-barcode" aria-hidden="true"></i> Choose</label>
+        <input type="text" id="node-input-dropdown" style="width:60%;" placeholder="">
+        <input type="hidden" id="node-input-dropdown_value">
         <a id="node-config-lookup" class="btn">
             <i id="node-config-lookup-icon" class="fa fa-search">           
             </i></a>
     </div>
     <div class="form-row">
-        <label for="node-input-dropdown"><i class="fa fa-barcode" aria-hidden="true"></i> Choose</label>
-        <input type="text" id="node-input-dropdown" style="width:60%;" placeholder="">
+        <label for="node-input-value"><i class="fa fa-barcode" aria-hidden="true"></i> Value</label>
+        <input type="text" id="node-input-value" style="width:70%;" placeholder="">
     </div>
 </script>

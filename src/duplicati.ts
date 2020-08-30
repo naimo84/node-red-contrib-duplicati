@@ -18,7 +18,7 @@ module.exports = function (RED) {
         let node = this;
         RED.nodes.createNode(node, config);
         node.config = RED.nodes.getNode(config.confignode) as unknown as Config;
-        node.lookup_value = config.lookup_value;
+        node.dropdown_value = config.dropdown_value;
         node.action = config.action;
         const dup = new Duplicati({
             url: node.config.url
@@ -43,7 +43,7 @@ module.exports = function (RED) {
         node.on('input', async function (msg) {
             let message = RED.util.cloneMessage(msg);
             node.action = msg.action || node.action;
-            node.backup = parseInt(msg.backup?.id || node.lookup_value);
+            node.backup = parseInt(msg.backup?.id || node.dropdown_value);
             try {
                 await login(dup, node);
 
