@@ -27,16 +27,18 @@
   ],
   "license": "MIT",
   "keywords": [
-    "node-red"
+    "node-red",
+    "duplicati",
+    "backup"
   ],
   "scripts": {
-    "debug": "node --inspect=0.0.0.0:5858 --preserve-symlinks C:\\Users\\mail\\AppData\\Roaming\\npm\\node_modules\\node-red\\red.js -v --userDir C:\\Users\\mail\\.node-red",
     "start": "node-red",
     "test": "mocha \"test/**/*_spec.js\"",
     "release": "standard-version",
     "release-minor": "standard-version --release-as minor",
     "watch": "tsc -w -p ./tsconfig.json",
     "dev": "gulp develop",
+    "html":"gulp copy-html",
     "build": "gulp"
   },
   "nodemonConfig": {
