@@ -14,6 +14,10 @@
                 },
                 name: {
                     value: ""
+                }, lookup: {
+                    value: ""
+                }, lookup_value: {
+                    value: ""
                 },
                 action: {
                     value: ""
@@ -48,7 +52,7 @@
                         minLength: 0,
                         select: function (event, ui) {
                             $('#node-input-lookup').val(ui.item.label);
-                            $('#node-input-deviceserial').val(ui.item.value);
+                            $('#node-input-lookup_value').val(ui.item.value);
                             return false;
                         }
                     }).autocomplete("search", "");
@@ -97,6 +101,7 @@
     <div class="form-row">
         <label for="node-input-lookup"><i class="fa fa-barcode" aria-hidden="true"></i> List</label>
         <input type="text" id="node-input-lookup" style="width:60%;" placeholder="">
+        <input type="hidden" id="node-input-lookup_value">
         <a id="node-config-lookup" class="btn">
             <i id="node-config-lookup-icon" class="fa fa-search">           
             </i></a>

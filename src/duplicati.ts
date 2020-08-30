@@ -8,6 +8,8 @@ module.exports = function (RED) {
         let node = this;
         RED.nodes.createNode(node, config);
         node.config = RED.nodes.getNode(config.confignode) as unknown as Config;
+        node.lookup_value = config.lookup_value;
+        node.action = config.action;
         const dup = new Duplicati({
             url: node.config.url
         });
@@ -40,7 +42,8 @@ module.exports = function (RED) {
 
         node.on('input', async function (msg) {
             let message = RED.util.cloneMessage(msg);
-            node.action = msg.action;
+            node.action = msg.action|| node.action;
+            node.backup = parseInt(msg.backup?.id || node.lookup_value);
             try {
                 if (!node.tokenExpire || node.tokenExpire < new Date(Date.now() + 2 * 60 * 1000)) {
                     let token = await dup.getToken();
@@ -59,7 +62,7 @@ module.exports = function (RED) {
                         }));
                         break;
                     case 'runBackup':
-                        let backup = await dup.runBackup(3, node.token);
+                        let backup = await dup.runBackup(node.backup, node.token, node.auth);
                         node.send(Object.assign(message, {
                             payload: backup
                         }));
