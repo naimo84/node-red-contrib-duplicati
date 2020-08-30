@@ -25,29 +25,9 @@ gulp.task("copy-assets", function () {
 });
 
 gulp.task('develop', function (done) {
-    var stream = nodemon({
-        legacyWatch:true,
-        ext: '*.js',
-        watch: [paths.dist],
-        ignore: ["*.map"],
-        done: done,        
-        verbose: true
-    });
+   watch(paths.pages).pipe(gulp.dest(paths.dist));
 
-    copyHtml();
-
-    watch(paths.pages).on('change', () => {
-        stream.emit('restart', 10)
-    });
-
-    stream
-        .on('restart', function () {
-            console.log('restarted!')
-        })
-        .on('crash', function () {
-            console.error('Application has crashed!\n')
-            stream.emit('restart', 10)  // restart the server in 10 seconds
-        })
+    
 })
 
 gulp.task("default", gulp.series(

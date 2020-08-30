@@ -1,4 +1,21 @@
 <script type="text/javascript">
+    function initDropDown(value) {
+        console.log(value)
+        $("#node-input-dropdown").autocomplete({
+            source: function (request, response) {
+
+                response([{
+                    label: 'value.name',
+                    value: 'value.id'
+                }]);
+            },
+            minLength: 0,
+            select: function (event, ui) {
+               
+                return false;
+            }
+        }).autocomplete("search", "");
+    }
     RED
         .nodes
         .registerType('duplicati-node', {
@@ -33,6 +50,8 @@
                 var node = this;
 
 
+
+
                 $("#node-config-lookup").click(function () {
                     $("#node-config-lookup-icon").removeClass('fa-search');
                     $("#node-config-lookup-icon").addClass('spinner');
@@ -59,26 +78,20 @@
                         }
                     }).autocomplete("search", "");
                 });
-
+                $("#node-input-dropdown").click(function () {
+                    initDropDown( $('#node-input-action').val());
+                })
                 $('#node-input-action').change(function () {
                     var value = $('#node-input-action').val()
-                    console.log(value)
+                 
                     if (value === 'getBackups') {
                         $('#node-input-value').parent().hide();
                         $('#node-input-lookup').parent().hide();
-                        let options = [];
-                        for (i = 0; i < 3; i++) {
-                            options.push("<option value='" + i + "'>" + i + "</option>");
-                        }
-                        $("#node-input-dropdown").append(options.join("")).selectmenu();
+                        
                     } else if (['runBackup'].indexOf(value) >= 0) {
                         $('#node-input-value').parent().hide();
                         $('#node-input-lookup').parent().show();
-                        let options = [];
-                        for (i = 5; i < 15; i++) {
-                            options.push("<option value='" + i + "'>" + i + "</option>");
-                        }
-                        $("#node-input-dropdown").append(options.join("")).selectmenu();
+                        
                     }
                     $('.form-row.toggle').hide()
                     $('.form-row.' + value).show()
@@ -120,9 +133,6 @@
     </div>
     <div class="form-row">
         <label for="node-input-dropdown"><i class="fa fa-barcode" aria-hidden="true"></i> Choose</label>
-        <select name="dropdown" id="node-input-dropdown">
-            
-            <option>Faster</option>
-        </select>
+        <input type="text" id="node-input-dropdown" style="width:60%;" placeholder="">
     </div>
 </script>
