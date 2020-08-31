@@ -1,6 +1,5 @@
 <script type="text/javascript">
     function initDropDown(action) {
-        console.log(action)
         $("#node-input-dropdown").autocomplete({
             source: function (request, response) {
                 if (action === 'runBackup') {
@@ -15,10 +14,13 @@
                             };
                         }));
                     });
-                } else {
+                } else if (action === 'setServerstate') {
                     response([{
-                        label: 'value.name',
-                        value: 'value.id'
+                        label: 'resume',
+                        value: 'resume'
+                    }, {
+                        label: 'pause',
+                        value: 'pause'
                     }]);
                 }
             },
@@ -26,8 +28,21 @@
             select: function (event, ui) {
                 $('#node-input-dropdown').val(ui.item.label);
                 $('#node-input-dropdown_value').val(ui.item.value);
-
+                console.log("select")
+                if ($('#node-input-dropdown').val() === 'pause') {
+                    $('#node-input-value').parent().show();
+                } else {
+                    $('#node-input-value').parent().hide();
+                }
                 return false;
+            },
+            change: function (event, ui) {
+                console.log("change")
+                if ($('#node-input-dropdown').val() === 'pause') {
+                    $('#node-input-value').parent().show();
+                } else {
+                    $('#node-input-value').parent().hide();
+                }
             }
         }).autocomplete("search", "");
     }
@@ -76,6 +91,8 @@
                 $("#node-input-dropdown").click(function () {
                     initDropDown($('#node-input-action').val());
                 })
+
+
                 $('#node-input-action').change(function () {
                     var value = $('#node-input-action').val()
                     //initDropDown($('#node-input-action').val());
@@ -89,13 +106,15 @@
 
                     }
                     else if (['setServerstate'].indexOf(value) >= 0) {
-                        $('#node-input-value').parent().show();
+
                         $('#node-input-dropdown').parent().show();
 
                     }
                     $('.form-row.toggle').hide()
                     $('.form-row.' + value).show()
                 });
+
+
             }
         });
 </script>
