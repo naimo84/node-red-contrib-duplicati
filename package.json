@@ -38,7 +38,7 @@
     "release-minor": "standard-version --release-as minor",
     "watch": "tsc -w -p ./tsconfig.json",
     "dev": "gulp develop",
-    "html":"gulp copy-html",
+    "html": "gulp copy-html",
     "build": "gulp"
   },
   "nodemonConfig": {
@@ -76,6 +76,6 @@
     "@types/node": "^14.6.0"
   },
   "dependencies": {
-    "node-duplicati": "file:../node-duplicati"
+    "node-duplicati": "0.0.1"
   }
 }
