@@ -19,6 +19,7 @@ module.exports = function (RED) {
         RED.nodes.createNode(node, config);
         node.config = RED.nodes.getNode(config.confignode) as unknown as Config;
         node.dropdown_value = config.dropdown_value;
+        node.value = config.value;
         node.action = config.action;
         const dup = new Duplicati({
             url: node.config.url
@@ -49,7 +50,7 @@ module.exports = function (RED) {
 
                 switch (node.action) {
                     case 'setServerstate':
-                        let serverstate = await dup.setServerstate('resume', '24h', node.auth.token.token, node.auth);
+                        let serverstate = await dup.setServerstate(node.dropdown_value, node.value, node.auth.token.token, node.auth);
                         node.send(Object.assign(message, {
                             payload: serverstate
                         }));
