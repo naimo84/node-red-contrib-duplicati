@@ -3,7 +3,7 @@ import { Config } from "./duplicati-config";
 
 module.exports = function (RED) {
     async function login(dup, node) {
-        if (!node.auth || !node.auth.expires || node.auth.expires < new Date(Date.now() + 2 * 60 * 1000)) {
+        if (!!node.config.password && (!node.auth || !node.auth.expires || node.auth.expires < new Date(Date.now() + 2 * 60 * 1000))) {
             let auth = await dup.login(node.config.password);
             node.auth = auth;
         }
